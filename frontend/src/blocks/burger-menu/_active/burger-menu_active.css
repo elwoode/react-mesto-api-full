@@ -1,0 +1,17 @@
+.burger-menu_active {
+  background-color: transparent;
+}
+  
+.burger-menu_active::before {
+  transform: rotate(45deg);
+  width: 30px;
+  top: 0;
+  transition: top 0.2s linear, transform 0.2s ease 0.2s;
+} 
+
+.burger-menu_active::after {
+  transform: rotate(-45deg);
+  width: 30px;
+  top: 0;
+  transition: top 0.2s linear, transform 0.2s ease 0.2s;
+} 
