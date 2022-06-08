@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const AuthError = require('../errors/AuthError');
+
 const { JWT_SECRET = 'elwoode' } = process.env;
 
 module.exports = (req, _, next) => {
