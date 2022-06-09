@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('./middlewares/cors');
 const { createUser, login } = require('./controllers/users');
 const {
   validationCreateUser,
@@ -15,10 +17,15 @@ const { cardRouter } = require('./routes/cards');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-});
+
 app.use(express.json());
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.use(requestLogger);
 app.post('/signup', validationCreateUser, createUser);
@@ -32,6 +39,11 @@ app.all('*', () => {
 app.use(errorLogger);
 app.use(errors());
 app.use(handelError);
+
+mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+  console.log('Connection successful');
+});
+
 app.listen(PORT, () => {
   console.log(`Запуск сервера ${PORT}`);
 });

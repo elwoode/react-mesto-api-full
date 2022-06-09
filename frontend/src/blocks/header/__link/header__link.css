@@ -1,0 +1,20 @@
+.header__link {
+  font-size: 18px;
+  line-height: 22px;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity .2s linear;
+}
+
+.header__link:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 700px) {
+  .header__link {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0;
+  }
+}
