@@ -77,13 +77,16 @@ function App() {
   }
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([user, cards]) => {
-      setCurrentUser(user);
-      setCards(cards);
-    }).catch((err) => {
-      console.error(err);
-    });
-  }, []);
+    if (isLoggedIn === true) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([user, cards]) => {
+        setCurrentUser(user.user);
+        setCards(cards.reverse());
+      }).catch((err) => {
+        console.error(err);
+      });
+    }
+  }, [isLoggedIn]);
+
 
   function handleUpdateUser(data) {
     api.updateUserInfo(data).then((newUser) => {
@@ -100,9 +103,8 @@ function App() {
       .setLikeStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      })
-      .catch((err) => {
-        console.log(err);
+      }).catch((err) => {
+        console.error(err);
       });
   }
 
