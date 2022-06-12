@@ -95,7 +95,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'api.backend.dumanev.mesto.nomoredomains.xyz',
+  baseUrl: 'https://api.backend.dumanev.mesto.nomoredomains.xyz',
   headers: {
     'Content-Type': 'application/json',
   },
