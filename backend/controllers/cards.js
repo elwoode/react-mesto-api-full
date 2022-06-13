@@ -12,27 +12,26 @@ const getCards = (req, res, next) => {
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
-
   return Cards.create({ name, link, owner })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequest('Переданы некорректные данные при создании карточки');
+        next(new BadRequest('Переданы некорректные данные при создании карточки'));
+      } else {
+        next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-
   return Cards.findById(cardId)
     .orFail(() => {
       throw new NotFound('Карточка с указанным _id не найдена');
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Cards.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
+        return Cards.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
       } else {
         throw new ForbiddenError('В доступе отказано');
       }

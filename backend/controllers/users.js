@@ -66,12 +66,12 @@ const updateUser = (req, res, next) => {
     { name, about },
     { new: true, runValidators: true },
   ).orFail(() => {
-    throw new NotFound('Пользователь с указанным _id не найден');
+    next(new NotFound('Пользователь с указанным _id не найден'));
   })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        throw new BadRequest('Переданы некорректные данные при обновлении профиля');
+        next(new BadRequest('Переданы некорректные данные при обновлении профиля'));
       } else {
         next(err);
       }
@@ -86,12 +86,12 @@ const updateAvatar = (req, res, next) => {
     { avatar },
     { new: true, runValidators: true },
   ).orFail(() => {
-    throw new NotFound('Пользователь с указанным _id не найден');
+    next(new NotFound('Пользователь с указанным _id не найден'));
   })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        throw new BadRequest('Переданы некорректные данные при обновлении аватара');
+        next(new BadRequest('Переданы некорректные данные при обновлении аватара'));
       } else {
         next(err);
       }
@@ -101,14 +101,14 @@ const updateAvatar = (req, res, next) => {
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFound('Пользователь не найден');
+      next(new NotFound('Пользователь не найден'));
     })
     .then((user) => res.status(200).send({ user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequest('Переданы некорректные данные');
+        next(new BadRequest('Переданы некорректные данные'));
       } else if (err.message === 'NotFound') {
-        throw new NotFound('Пользователь не найден');
+        next(new NotFound('Пользователь не найден'));
       } else {
         next(err);
       }
