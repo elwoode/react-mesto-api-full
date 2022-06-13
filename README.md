@@ -47,4 +47,6 @@
 ## Ссылки:
 - Frontend: https://fronted.dumanev.mesto.nomoreparties.sbs/
 - Backend:  https://api.backend.dumanev.mesto.nomoredomains.xyz/
-- публичный IP-адрес сервера: 84.201.139.25
+Попасть на сервер можно по Логину и IP-адресу : $ ssh elw@84.201.139.25
+
+
