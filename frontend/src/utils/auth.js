@@ -1,5 +1,4 @@
 export const BASE_URL = 'https://api.backend.dumanev.mesto.nomoredomains.xyz';
-
 export function registerUser(email, password) {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
