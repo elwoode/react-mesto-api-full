@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('./middlewares/cors');
+const helmet = require('helmet');
 const { createUser, login } = require('./controllers/users');
 const {
   validationCreateUser,
@@ -14,8 +15,8 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { userRouter } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
-
-const { PORT = 3000 } = process.env;
+const { createAccountLimiter, limiter } = require('./middlewares/limiter');
+const { PORT = 3005 } = process.env;
 const app = express();
 
 app.use(express.json());
@@ -28,7 +29,9 @@ app.get('/crash-test', () => {
 });
 
 app.use(requestLogger);
-app.post('/signup', validationCreateUser, createUser);
+app.use(helmet());
+app.post('/signup', createAccountLimiter, validationCreateUser, createUser);
+app.use(limiter);
 app.post('/signin', validationLogin, login);
 app.use(auth);
 app.use('/users', userRouter);
