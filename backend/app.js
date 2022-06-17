@@ -15,7 +15,7 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { userRouter } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
-const { createAccountLimiter, limiter } = require('./middlewares/limiter');
+const { createAccountLimiter, cardLimiter, authLimiter, usersLimiter } = require('./middlewares/limiter');
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -31,11 +31,10 @@ app.get('/crash-test', () => {
 app.use(requestLogger);
 app.use(helmet());
 app.post('/signup', createAccountLimiter, validationCreateUser, createUser);
-app.use(limiter);
-app.post('/signin', validationLogin, login);
+app.post('/signin', authLimiter, validationLogin, login);
 app.use(auth);
-app.use('/users', userRouter);
-app.use('/cards', cardRouter);
+app.use('/users', usersLimiter, userRouter);
+app.use('/cards', cardLimiter, cardRouter);
 app.all('*', () => {
   throw new NotFoundError('Запрашиваемая страница не найдена');
 });
