@@ -43,10 +43,11 @@
 - Сelebrate;
 - Winston.
 - CORS.
+- Helmet.
+- express-rate-limit
 
 ## Ссылки:
 - Frontend: https://fronted.dumanev.mesto.nomoreparties.sbs/
 - Backend:  https://api.backend.dumanev.mesto.nomoredomains.xyz/
-- IP-адрес сервера: 84.201.139.25
 
 
